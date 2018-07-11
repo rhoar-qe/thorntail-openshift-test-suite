@@ -1,0 +1,6 @@
+metadata:
+  name: app-config
+data:
+  project-defaults.yml: |
+    greeting:
+      message: Hello %s from a ConfigMap!
