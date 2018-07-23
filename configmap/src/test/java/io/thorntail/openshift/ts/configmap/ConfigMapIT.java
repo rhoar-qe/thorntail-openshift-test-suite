@@ -10,14 +10,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import io.thorntail.openshift.ts.utils.OpenShiftUtils;
+
 import java.net.URL;
-import java.util.concurrent.TimeUnit;
 
 import static io.restassured.RestAssured.given;
-import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.containsString;
 
 @RunWith(Arquillian.class)
@@ -33,7 +30,7 @@ public class ConfigMapIT {
     private URL greetingUrl;
 
     @RouteURL(value = "${app.name}", path = "/health")
-    private String healthUrl;
+    private URL healthUrl;
 
     @Test
     public void _1_simpleInvocation() {
@@ -60,9 +57,7 @@ public class ConfigMapIT {
 
     @Test
     public void _3_updateConfigMap() throws Exception {
-        deployConfigMap("target/test-classes/test-config-update.yml");
-
-        rolloutChanges();
+        OpenShiftUtils.deployConfigMapAndRollout(openShiftAssistant, "target/test-classes/test-config-update.yml", APP_NAME, greetingUrl);
 
         given()
                 .baseUri(greetingUrl.toString())
@@ -75,9 +70,7 @@ public class ConfigMapIT {
 
     @Test
     public void _4_wrongConfiguration() throws Exception {
-        deployConfigMap("target/test-classes/test-config-broken.yml");
-
-        rolloutChanges();
+        OpenShiftUtils.deployConfigMapAndRollout(openShiftAssistant, "target/test-classes/test-config-broken.yml", APP_NAME, healthUrl);
 
         given()
                 .baseUri(greetingUrl.toString())
@@ -87,37 +80,4 @@ public class ConfigMapIT {
                 .statusCode(500);
     }
 
-    private void deployConfigMap(String path) throws IOException {
-        try (InputStream yaml = new FileInputStream(path)) {
-            // in this test, this always replaces an existing configmap, which is already tracked for deleting
-            // after the test finishes
-            openShiftAssistant.deploy(yaml);
-        }
-    }
-
-    private void rolloutChanges() {
-        // in reality, user would do `oc rollout latest`, but that's hard (racy) to wait for
-        // so here, we'll scale down to 0, wait for that, then scale back to 1 and wait again
-        openShiftAssistant.scale(APP_NAME, 0);
-
-        await().atMost(5, TimeUnit.MINUTES).untilAsserted(() -> {
-            given()
-                    .baseUri(healthUrl)
-            .when()
-                    .get()
-            .then()
-                    .statusCode(503);
-        });
-
-        openShiftAssistant.scale(APP_NAME, 1);
-
-        await().atMost(5, TimeUnit.MINUTES).untilAsserted(() -> {
-            given()
-                    .baseUri(healthUrl)
-            .when()
-                    .get()
-            .then()
-                    .statusCode(200);
-        });
-    }
 }
