@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  project-defaults.yml: |-
+    swarm:
+      datasources:
+        data-sources:
+          MyDS:
+            driver-name: postgresql
+            connection-url: jdbc:postgresql://test-db:5432/testdb
+            user-name: testuser
+            password: password
+            valid-connection-checker-class-name: org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker
+            validate-on-match: true
+            background-validation: false
+            exception-sorter-class-name: org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter
