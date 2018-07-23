@@ -1,0 +1,19 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: app-config
+data:
+  app-config.yml: |-
+    swarm:
+      datasources:
+        data-sources:
+          MyDS:
+            driver-name: mysql
+            connection-url: db.jdbc_url?useSSL=false
+            user-name: db.username
+            password: db.password
+            valid-connection-checker-class-name: org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker
+            validate-on-match: true
+            background-validation: false
+            exception-sorter-class-name: org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter
+
