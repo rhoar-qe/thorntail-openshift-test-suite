@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  project-defaults.yml: |-
+    swarm:
+      datasources:
+        data-sources:
+          MyDS:
+            driver-name: oracle
+            connection-url: ${db.jdbc.url}
+            user-name: ${db.username}
+            password: ${db.password}
+            valid-connection-checker-class-name: org.jboss.jca.adapters.jdbc.extensions.oracle.OracleValidConnectionChecker
+            validate-on-match: true
+            background-validation: false
+            stale-connection-checker-class-name: org.jboss.jca.adapters.jdbc.extensions.oracle.OracleStaleConnectionChecker
+            exception-sorter-class-name: org.jboss.jca.adapters.jdbc.extensions.oracle.OracleExceptionSorter
