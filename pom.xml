@@ -240,4 +240,27 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>additional-maven-repository</id>
+            <activation>
+                <property>
+                    <name>additional.maven.repository</name>
+                </property>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>additional-maven-repository</id>
+                    <url>${additional.maven.repository}</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
 </project>
