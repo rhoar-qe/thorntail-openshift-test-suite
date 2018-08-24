@@ -1,4 +1,4 @@
-package io.thorntail.openshift.ts.common;
+package io.thorntail.openshift.ts.common.arquillian;
 
 import org.arquillian.cube.openshift.impl.client.OpenShiftClient;
 import org.jboss.arquillian.core.api.InstanceProducer;

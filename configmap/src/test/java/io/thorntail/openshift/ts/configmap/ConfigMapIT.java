@@ -1,6 +1,6 @@
 package io.thorntail.openshift.ts.configmap;
 
-import io.thorntail.openshift.ts.common.OpenShiftUtil;
+import io.thorntail.openshift.ts.common.arquillian.OpenShiftUtil;
 import org.arquillian.cube.openshift.impl.enricher.AwaitRoute;
 import org.arquillian.cube.openshift.impl.enricher.RouteURL;
 import org.jboss.arquillian.junit.Arquillian;

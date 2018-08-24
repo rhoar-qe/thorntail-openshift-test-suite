@@ -1,4 +1,4 @@
-package io.thorntail.openshift.ts.common;
+package io.thorntail.openshift.ts.common.arquillian;
 
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;

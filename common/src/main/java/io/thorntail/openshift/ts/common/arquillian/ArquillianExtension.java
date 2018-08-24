@@ -1,4 +1,4 @@
-package io.thorntail.openshift.ts.common;
+package io.thorntail.openshift.ts.common.arquillian;
 
 import org.jboss.arquillian.core.spi.LoadableExtension;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;

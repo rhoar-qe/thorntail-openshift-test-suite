@@ -1,7 +1,7 @@
 package io.thorntail.openshift.ts.sql.db;
 
 import io.fabric8.openshift.client.OpenShiftClient;
-import io.thorntail.openshift.ts.common.OpenShiftUtil;
+import io.thorntail.openshift.ts.common.arquillian.OpenShiftUtil;
 import org.arquillian.cube.openshift.impl.enricher.AwaitRoute;
 import org.arquillian.cube.openshift.impl.enricher.RouteURL;
 import org.jboss.arquillian.junit.InSequence;

@@ -1,4 +1,4 @@
-package io.thorntail.openshift.ts.common;
+package io.thorntail.openshift.ts.common.arquillian;
 
 import io.fabric8.kubernetes.api.model.v4_0.Pod;
 import io.fabric8.kubernetes.clnt.v4_0.internal.readiness.Readiness;
