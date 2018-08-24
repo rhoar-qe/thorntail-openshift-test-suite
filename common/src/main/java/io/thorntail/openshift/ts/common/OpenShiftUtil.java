@@ -1,8 +1,8 @@
 package io.thorntail.openshift.ts.common;
 
-import io.fabric8.kubernetes.api.model.v3_1.Pod;
-import io.fabric8.kubernetes.clnt.v3_1.internal.readiness.Readiness;
-import io.fabric8.openshift.clnt.v3_1.OpenShiftClient;
+import io.fabric8.kubernetes.api.model.v4_0.Pod;
+import io.fabric8.kubernetes.clnt.v4_0.internal.readiness.Readiness;
+import io.fabric8.openshift.clnt.v4_0.OpenShiftClient;
 import org.arquillian.cube.openshift.impl.client.ResourceUtil;
 
 import java.io.File;
