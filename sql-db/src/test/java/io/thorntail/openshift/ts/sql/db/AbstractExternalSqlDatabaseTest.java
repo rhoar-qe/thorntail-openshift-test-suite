@@ -10,24 +10,21 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 public abstract class AbstractExternalSqlDatabaseTest extends AbstractSqlDatabaseTest {
-    private static final String DB_ALLOCATOR_SERVLET_URL = System.getProperty("db.allocator.url");
+    private static final DbAllocator DB_ALLOCATOR = new DbAllocator(System.getProperty("db.allocator.url"));
 
     private final String dbAllocatorLabel;
     private final String projectDefaultsYmlPath;
-    private final DbAllocator dbAllocator;
 
-    private String allocatedDbUuid;
+    private static String allocatedDbUuid; // static because each test gets its own instance of the class :-(
 
     protected AbstractExternalSqlDatabaseTest(String dbAllocatorLabel, String projectDefaultsYmlPath) {
         this.dbAllocatorLabel = dbAllocatorLabel;
         this.projectDefaultsYmlPath = projectDefaultsYmlPath;
-
-        this.dbAllocator = new DbAllocator(DB_ALLOCATOR_SERVLET_URL);
     }
 
     @Override
     protected void createDb() throws Exception {
-        Properties props = dbAllocator.allocate(dbAllocatorLabel);
+        Properties props = DB_ALLOCATOR.allocate(dbAllocatorLabel);
         allocatedDbUuid = props.getProperty("uuid");
 
         String config = new String(Files.readAllBytes(Paths.get(projectDefaultsYmlPath)), StandardCharsets.UTF_8)
@@ -40,6 +37,6 @@ public abstract class AbstractExternalSqlDatabaseTest extends AbstractSqlDatabas
 
     @Override
     protected void dropDb() throws Exception {
-        dbAllocator.free(allocatedDbUuid);
+        DB_ALLOCATOR.free(allocatedDbUuid);
     }
 }

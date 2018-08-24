@@ -8,6 +8,9 @@ import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +24,14 @@ public final class DbAllocator {
         if (url == null || url.isEmpty()) {
             throw new IllegalArgumentException("DbAllocator URL must be provided");
         }
+        if (url.contains("AllocatorServlet")) {
+            throw new IllegalArgumentException("Only http://db.allocator.host/ expected, not the full AllocatorServlet URL");
+        }
+
+        if (!url.endsWith("/")) {
+            url += "/";
+        }
+        url += "Allocator/AllocatorServlet";
         this.url = url;
     }
 
@@ -74,14 +85,19 @@ public final class DbAllocator {
         return null;
     }
 
-    private String formatUrl(String operation, Map<String, String> parameters) {
+    private String formatUrl(String operation, Map<String, String> parameters) throws UnsupportedEncodingException {
         StringBuilder sb = new StringBuilder();
-        sb.append(url).append("?");
-        sb.append("operation=").append(operation);
+        sb.append(url)
+                .append("?")
+                .append("operation=")
+                .append(operation);
 
         if (parameters != null) {
             for (Entry<String, String> parameter : parameters.entrySet()) {
-                sb.append("&").append(parameter.getKey()).append("=").append(parameter.getValue());
+                sb.append("&")
+                        .append(parameter.getKey())
+                        .append("=")
+                        .append(URLEncoder.encode(parameter.getValue(), StandardCharsets.UTF_8.name()));
             }
         }
 

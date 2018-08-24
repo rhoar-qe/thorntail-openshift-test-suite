@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class ExternalPostgresqlIT extends AbstractExternalSqlDatabaseTest {
     public ExternalPostgresqlIT() {
-        // TODO label needs updating
         super("postgresql96&&geo_RDU", "target/test-classes/project-defaults-external-postgresql.yml");
     }
 }
