@@ -1,13 +1,17 @@
-package io.thorntail.openshift.ts.sql.db.util;
+package io.thorntail.openshift.ts.common.db.allocator;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -35,7 +39,7 @@ public final class DbAllocator {
         this.url = url;
     }
 
-    public Properties allocate(String label) throws Exception {
+    public DbAllocation allocate(String label) throws Exception {
         String requestee = "Thorntail-TS";
         StackTraceElement[] stack = new Throwable().getStackTrace();
         if (stack.length > 1) {
@@ -49,37 +53,39 @@ public final class DbAllocator {
         params.put("requestee", requestee);
         params.put("expiry", "60");
 
-        try (InputStream is = performOperation("allocate", params)) {
+        try {
+            String response = performOperation("allocate", params);
             Properties props = new Properties();
-            props.load(is);
+            props.load(new StringReader(response));
 
             if (props.toString().contains("ResourceNotAvailableException")) {
                 throw new RuntimeException("ResourceNotAvailableException: No resources found for allocation with label expression: " + label);
             }
 
-            return props;
+            return new DbAllocation(props);
         } catch (IOException ex) {
             throw new RuntimeException("Unable to read DbAllocator response", ex);
         }
     }
 
-    public void erase(String uuid) throws Exception {
-        performOperation("erase", Collections.singletonMap("uuid", uuid));
+    public void erase(DbAllocation allocation) throws Exception {
+        performOperation("erase", Collections.singletonMap("uuid", allocation.getUuid()));
     }
 
-    public void free(String uuid) throws Exception {
-        performOperation("dealloc", Collections.singletonMap("uuid", uuid));
+    public void free(DbAllocation allocation) throws Exception {
+        performOperation("dealloc", Collections.singletonMap("uuid", allocation.getUuid()));
     }
 
-    private InputStream performOperation(String operation, Map<String, String> parameters) throws Exception {
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpGet request = new HttpGet(formatUrl(operation, parameters));
+    private String performOperation(String operation, Map<String, String> parameters) throws Exception {
+        try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
+            HttpGet request = new HttpGet(formatUrl(operation, parameters));
 
-        HttpResponse response = client.execute(request);
-        HttpEntity entity = response.getEntity();
+            HttpResponse response = client.execute(request);
+            HttpEntity entity = response.getEntity();
 
-        if (entity != null) {
-            return entity.getContent();
+            if (entity != null) {
+                return EntityUtils.toString(entity);
+            }
         }
 
         return null;

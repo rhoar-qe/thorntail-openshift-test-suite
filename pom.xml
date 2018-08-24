@@ -33,6 +33,7 @@
         <version.io.thorntail>2.1.0.Final</version.io.thorntail>
         <version.junit.junit>4.12</version.junit.junit>
         <version.mysql.mysql-connector-java>8.0.11</version.mysql.mysql-connector-java>
+        <version.org.apache.httpcomponents.everything>4.5.6</version.org.apache.httpcomponents.everything>
         <version.org.apache.maven.plugins.maven-compiler-plugin>3.7.0</version.org.apache.maven.plugins.maven-compiler-plugin>
         <version.org.apache.maven.plugins.maven-enforcer.plugin>1.4.1</version.org.apache.maven.plugins.maven-enforcer.plugin>
         <version.org.apache.maven.plugins.maven-surefire-plugin>2.21.0</version.org.apache.maven.plugins.maven-surefire-plugin>
@@ -89,6 +90,22 @@
                 <groupId>org.wildfly.core</groupId>
                 <artifactId>wildfly-controller-client</artifactId>
                 <version>${version.org.wildfly.core.wildfly-controller-client}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>fluent-hc</artifactId>
+                <version>${version.org.apache.httpcomponents.everything}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${version.org.apache.httpcomponents.everything}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpmime</artifactId>
+                <version>${version.org.apache.httpcomponents.everything}</version>
             </dependency>
 
             <!-- test dependencies -->
