@@ -18,6 +18,8 @@
         <module>configmap</module>
 
         <module>sql-db</module>
+
+        <module>topology</module>
     </modules>
 
     <properties>
@@ -36,6 +38,7 @@
         <version.org.apache.httpcomponents.everything>4.5.6</version.org.apache.httpcomponents.everything>
         <version.org.apache.maven.plugins.maven-compiler-plugin>3.7.0</version.org.apache.maven.plugins.maven-compiler-plugin>
         <version.org.apache.maven.plugins.maven-enforcer.plugin>1.4.1</version.org.apache.maven.plugins.maven-enforcer.plugin>
+        <version.org.apache.maven.plugins.maven-resources-plugin>3.1.0</version.org.apache.maven.plugins.maven-resources-plugin>
         <version.org.apache.maven.plugins.maven-surefire-plugin>2.21.0</version.org.apache.maven.plugins.maven-surefire-plugin>
         <version.org.apache.maven.plugins.maven-war-plugin>3.2.0</version.org.apache.maven.plugins.maven-war-plugin>
         <version.org.arquillian.cube>1.17.1</version.org.arquillian.cube>
@@ -175,6 +178,7 @@
                     <version>${version.io.fabric8.fabric8-maven-plugin}</version>
                     <executions>
                         <execution>
+                            <id>default</id>
                             <goals>
                                 <goal>resource</goal>
                                 <goal>build</goal>
@@ -241,6 +245,11 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${version.org.apache.maven.plugins.maven-resources-plugin}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
