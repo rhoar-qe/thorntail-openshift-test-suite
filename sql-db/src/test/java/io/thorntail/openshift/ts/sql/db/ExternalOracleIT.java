@@ -6,6 +6,6 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class ExternalOracleIT extends AbstractExternalSqlDatabaseTest {
     public ExternalOracleIT() {
-        super("oracle12cR2&&geo_BOS", "target/test-classes/project-defaults-external-oracle.yml");
+        super("oracle12c", "target/test-classes/project-defaults-external-oracle.yml");
     }
 }
