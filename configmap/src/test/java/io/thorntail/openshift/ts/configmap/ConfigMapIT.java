@@ -12,8 +12,10 @@ import org.junit.runners.MethodSorters;
 
 import java.io.File;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import static io.restassured.RestAssured.given;
+import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.containsString;
 
 @RunWith(Arquillian.class)
@@ -71,12 +73,14 @@ public class ConfigMapIT {
     public void _4_wrongConfiguration() throws Exception {
         openshift.deployAndRollout(new File("target/test-classes/test-config-broken.yml"), APP_NAME, healthUrl);
 
-        given()
-                .baseUri(greetingUrl.toString())
-        .when()
-                .get()
-        .then()
-                .statusCode(500);
+        await().atMost(5, TimeUnit.MINUTES).untilAsserted(() -> {
+            given()
+                    .baseUri(greetingUrl.toString())
+            .when()
+                    .get()
+            .then()
+                    .statusCode(500);
+        });
     }
 
 }
