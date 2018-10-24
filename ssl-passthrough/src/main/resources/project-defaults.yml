@@ -1,0 +1,8 @@
+swarm:
+  https:
+    keystore:
+      path: /etc/keystores/keystore.jks
+      password: password
+    key:
+      alias: httpskey
+      password: password

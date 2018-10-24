@@ -1,0 +1,12 @@
+spec:
+  template:
+    spec:
+      containers:
+      - volumeMounts:
+        - name: keystore-volume
+          mountPath: /etc/keystores
+      volumes:
+      - name: keystore-volume
+        secret:
+          secretName: keystore-secret
+
