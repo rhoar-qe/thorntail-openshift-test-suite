@@ -21,6 +21,7 @@
 
         <module>topology</module>
         <module>ssl-passthrough</module>
+        <module>scaling</module>
     </modules>
 
     <properties>
@@ -43,6 +44,7 @@
         <version.org.apache.maven.plugins.maven-surefire-plugin>2.21.0</version.org.apache.maven.plugins.maven-surefire-plugin>
         <version.org.apache.maven.plugins.maven-war-plugin>3.2.0</version.org.apache.maven.plugins.maven-war-plugin>
         <version.org.arquillian.cube>1.17.1</version.org.arquillian.cube>
+        <version.org.assertj.assertj-core>3.9.1</version.org.assertj.assertj-core>
         <version.org.awaitility>3.1.2</version.org.awaitility>
         <version.org.codehaus.mojo.keytool-maven-plugin>1.5</version.org.codehaus.mojo.keytool-maven-plugin>
         <version.org.postgresql>42.2.4</version.org.postgresql>
@@ -139,6 +141,11 @@
                         <artifactId>undertow-core</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>${version.org.assertj.assertj-core}</version>
             </dependency>
             <dependency>
                 <groupId>org.awaitility</groupId>

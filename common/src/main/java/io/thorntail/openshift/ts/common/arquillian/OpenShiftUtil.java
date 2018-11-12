@@ -22,25 +22,28 @@ public final class OpenShiftUtil {
         this.oc = oc;
     }
 
-    public void scale(String name, int replicas) {
+    private List<Pod> listPodsForDeploymentConfig(String deploymentConfigName) {
+        return oc.pods()
+                .inNamespace(oc.getNamespace())
+                .withLabel("deploymentconfig", deploymentConfigName)
+                .list()
+                .getItems();
+    }
+
+    public void scale(String deploymentConfigName, int replicas) {
         oc.deploymentConfigs()
                 .inNamespace(oc.getNamespace())
-                .withName(name)
+                .withName(deploymentConfigName)
                 .scale(replicas);
 
-        awaitDeploymentReadiness(name, replicas);
+        awaitDeploymentReadiness(deploymentConfigName, replicas);
     }
 
     public void awaitDeploymentReadiness(String deploymentConfigName, int expectedReplicas) {
         await().atMost(5, TimeUnit.MINUTES).until(() -> {
             // ideally, we'd look at deployment config's status.availableReplicas field,
             // but that's only available since OpenShift 3.5
-            List<Pod> pods = oc
-                    .pods()
-                    .inNamespace(oc.getNamespace())
-                    .withLabel("deploymentconfig", deploymentConfigName)
-                    .list()
-                    .getItems();
+            List<Pod> pods = listPodsForDeploymentConfig(deploymentConfigName);
             try {
                 return pods.size() == expectedReplicas && pods.stream().allMatch(Readiness::isPodReady);
             } catch (IllegalStateException e) {
@@ -51,11 +54,25 @@ public final class OpenShiftUtil {
         });
     }
 
-    public void rolloutChanges(String appName, URL healthUrl) {
+    public int countReadyReplicas(String deploymentConfigName) {
+        List<Pod> pods = listPodsForDeploymentConfig(deploymentConfigName);
+
+        int number = 0;
+        for (Pod pod : pods) {
+            if (Readiness.isPodReady(pod)) {
+                number++;
+            }
+        }
+        return number;
+    }
+
+    public void rolloutChanges(String deploymentConfigName, URL healthUrl) {
+        int replicas = countReadyReplicas(deploymentConfigName);
+
         // in reality, user would do `oc rollout latest`, but that's hard (racy) to wait for
-        // so here, we'll scale down to 0, wait for that, then scale back to 1 and wait again
-        scale(appName, 0);
-        scale(appName, 1);
+        // so here, we'll scale down to 0, wait for that, then scale back to original number of replicas and wait again
+        scale(deploymentConfigName, 0);
+        scale(deploymentConfigName, replicas);
 
         ResourceUtil.awaitRoute(healthUrl, 200);
     }
