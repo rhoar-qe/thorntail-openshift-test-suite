@@ -3,7 +3,7 @@ spec:
     spec:
       containers:
       - env:
-        - name: JAVA_OPTIONS
+        - name: JAVA_OPTS
           value: "-Dswarm.project.stage.file=file:///app/config/project-defaults.yml"
         volumeMounts:
         - name: config
