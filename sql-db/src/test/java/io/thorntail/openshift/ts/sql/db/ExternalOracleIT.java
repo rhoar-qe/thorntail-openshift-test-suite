@@ -1,11 +1,13 @@
 package io.thorntail.openshift.ts.sql.db;
 
+import io.thorntail.openshift.ts.sql.db.arquillian.SqlDatabaseAndConfigMap;
+import io.thorntail.openshift.ts.sql.db.infra.ExternalOracle;
+import org.arquillian.cube.openshift.api.OpenShiftResource;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class ExternalOracleIT extends AbstractExternalSqlDatabaseTest {
-    public ExternalOracleIT() {
-        super("oracle12c", "target/test-classes/project-defaults-external-oracle.yml");
-    }
+@SqlDatabaseAndConfigMap(ExternalOracle.class)
+@OpenShiftResource("file:target/classes/META-INF/fabric8/openshift.yml")
+public class ExternalOracleIT extends AbstractSqlDatabaseTest {
 }
