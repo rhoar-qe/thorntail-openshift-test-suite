@@ -1,21 +1,13 @@
 package io.thorntail.openshift.ts.sql.db;
 
+import io.thorntail.openshift.ts.sql.db.arquillian.SqlDatabaseAndConfigMap;
+import io.thorntail.openshift.ts.sql.db.infra.Mysql;
+import org.arquillian.cube.openshift.api.OpenShiftResource;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.runner.RunWith;
 
-import java.io.File;
-
 @RunWith(Arquillian.class)
-public class MysqlIT extends AbstractInternalSqlDatabaseTest {
-    public MysqlIT() {
-        super(
-                "registry.access.redhat.com/rhscl/mysql-57-rhel7",
-                new File("target/test-classes/project-defaults-mysql.yml"),
-                mapOf(
-                        "MYSQL_DATABASE", "testdb",
-                        "MYSQL_USER", "testuser",
-                        "MYSQL_PASSWORD", "password"
-                )
-        );
-    }
+@SqlDatabaseAndConfigMap(Mysql.class)
+@OpenShiftResource("file:target/classes/META-INF/fabric8/openshift.yml")
+public class MysqlIT extends AbstractSqlDatabaseTest {
 }

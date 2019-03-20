@@ -6,6 +6,8 @@
         <property name="namespace.use.current">true</property>
         <!-- when switching namespace.use.current to false, switch enableImageStreamDetection to true -->
         <property name="enableImageStreamDetection">false</property>
-        <property name="env.init.enabled">true</property>
+
+        <!-- disable this and deploy everything using annotations to get control over deployment ordering -->
+        <property name="env.init.enabled">false</property>
     </extension>
 </arquillian>

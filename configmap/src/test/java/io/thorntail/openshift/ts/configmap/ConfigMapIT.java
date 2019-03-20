@@ -58,7 +58,8 @@ public class ConfigMapIT {
 
     @Test
     public void _3_updateConfigMap() throws Exception {
-        openshift.deployAndRollout(new File("target/test-classes/test-config-update.yml"), APP_NAME, greetingUrl);
+        openshift.applyYaml(new File("target/test-classes/test-config-update.yml"));
+        openshift.rolloutChanges(APP_NAME, greetingUrl);
 
         given()
                 .baseUri(greetingUrl.toString())
@@ -71,7 +72,8 @@ public class ConfigMapIT {
 
     @Test
     public void _4_wrongConfiguration() throws Exception {
-        openshift.deployAndRollout(new File("target/test-classes/test-config-broken.yml"), APP_NAME, healthUrl);
+        openshift.applyYaml(new File("target/test-classes/test-config-broken.yml"));
+        openshift.rolloutChanges(APP_NAME, healthUrl);
 
         await().atMost(5, TimeUnit.MINUTES).untilAsserted(() -> {
             given()

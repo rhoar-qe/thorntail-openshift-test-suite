@@ -66,7 +66,7 @@ public final class OpenShiftUtil {
         return number;
     }
 
-    public void rolloutChanges(String deploymentConfigName, URL healthUrl) {
+    public void rolloutChanges(String deploymentConfigName, URL awaitUrl) {
         int replicas = countReadyReplicas(deploymentConfigName);
 
         // in reality, user would do `oc rollout latest`, but that's hard (racy) to wait for
@@ -74,18 +74,26 @@ public final class OpenShiftUtil {
         scale(deploymentConfigName, 0);
         scale(deploymentConfigName, replicas);
 
-        ResourceUtil.awaitRoute(healthUrl, 200);
+        ResourceUtil.awaitRoute(awaitUrl, 200);
     }
 
-    public void deployAndRollout(File yaml, String appName, URL healthUrl) throws IOException {
+    public void applyYaml(File yaml) throws IOException {
         try (InputStream is = new FileInputStream(yaml)) {
-            deployAndRollout(is, appName, healthUrl);
+            applyYaml(is);
         }
     }
 
-    public void deployAndRollout(InputStream yaml, String appName, URL healthUrl) {
+    public void applyYaml(InputStream yaml) {
         oc.load(yaml).createOrReplace();
+    }
 
-        rolloutChanges(appName, healthUrl);
+    public void deleteYaml(File yaml) throws IOException {
+        try (InputStream is = new FileInputStream(yaml)) {
+            deleteYaml(is);
+        }
+    }
+
+    public void deleteYaml(InputStream yaml) {
+        oc.load(yaml).delete();
     }
 }
