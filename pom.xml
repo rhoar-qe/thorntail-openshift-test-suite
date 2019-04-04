@@ -31,7 +31,7 @@
         <version.java>1.8</version.java>
 
         <version.com.oracle.jdbc>12.2.0.1</version.com.oracle.jdbc>
-        <version.io.fabric8.fabric8-maven-plugin>4.0.0</version.io.fabric8.fabric8-maven-plugin>
+        <version.io.fabric8.fabric8-maven-plugin>4.0.0-M2</version.io.fabric8.fabric8-maven-plugin>
         <version.io.fabric8.openshift-client>4.1.1</version.io.fabric8.openshift-client>
         <version.io.rest-assured>3.1.1</version.io.rest-assured>
         <version.io.thorntail>2.4.1.Final-SNAPSHOT</version.io.thorntail>
