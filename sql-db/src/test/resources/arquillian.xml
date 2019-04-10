@@ -9,5 +9,7 @@
 
         <!-- disable this and deploy everything using annotations to get control over deployment ordering -->
         <property name="env.init.enabled">false</property>
+
+        <property name="namespace.cleanup.enabled">false</property>
     </extension>
 </arquillian>
