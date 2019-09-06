@@ -39,6 +39,13 @@ public final class OpenShiftUtil {
         awaitDeploymentReadiness(deploymentConfigName, replicas);
     }
 
+    public void deployLatest(String deploymentConfigName, boolean waitForAllReplicas) {
+        oc.deploymentConfigs()
+                .inNamespace(oc.getNamespace())
+                .withName(deploymentConfigName)
+                .deployLatest(waitForAllReplicas);
+    }
+
     public void awaitDeploymentReadiness(String deploymentConfigName, int expectedReplicas) {
         await().atMost(5, TimeUnit.MINUTES).until(() -> {
             // ideally, we'd look at deployment config's status.availableReplicas field,
