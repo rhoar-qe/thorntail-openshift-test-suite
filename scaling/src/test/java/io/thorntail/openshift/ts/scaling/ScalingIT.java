@@ -1,10 +1,8 @@
 package io.thorntail.openshift.ts.scaling;
 
-import io.restassured.response.ValidatableResponse;
 import io.thorntail.openshift.ts.common.arquillian.OpenShiftUtil;
 import org.arquillian.cube.openshift.impl.enricher.AwaitRoute;
 import org.arquillian.cube.openshift.impl.enricher.RouteURL;
-import org.awaitility.core.ThrowingRunnable;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.After;
@@ -15,7 +13,6 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
