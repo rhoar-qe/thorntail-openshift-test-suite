@@ -11,3 +11,4 @@ For each downstream `major.minor` version, there's a corresponding maintenance
 branch:
 
 - `2.4.x` for RHOAR Thorntail 2.4.x (corresponding upstream version: `2.4.0.Final+`)
+- `2.5.x` for RHOAR Thorntail 2.5.x (corresponding upstream version: `2.5.0.Final+`)
