@@ -1,7 +1,5 @@
 package io.thorntail.openshift.ts.sql.db.infra;
 
-import org.arquillian.cube.kubernetes.impl.utils.CommandExecutor;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.arquillian.cube.kubernetes.impl.utils.CommandExecutor;
+
 public abstract class AbstractInternalSqlDatabaseAndConfigMapStrategy extends AbstractSqlDatabaseAndConfigMapStrategy {
     private final String image;
     private final File projectDefaultsYml;
@@ -17,9 +17,11 @@ public abstract class AbstractInternalSqlDatabaseAndConfigMapStrategy extends Ab
 
     private final CommandExecutor cmd;
 
-    protected AbstractInternalSqlDatabaseAndConfigMapStrategy(String image, File projectDefaultsYml,
+    protected AbstractInternalSqlDatabaseAndConfigMapStrategy(String defaultImage, String imageFromCL, File projectDefaultsYml,
                                                               Map<String, String> environmentVariables) {
-        this.image = image;
+
+        this.image = getImage(defaultImage, imageFromCL);
+        System.out.println("Image to be used: " + image);
         this.projectDefaultsYml = projectDefaultsYml;
         this.environmentVariables = environmentVariables;
 
@@ -47,6 +49,15 @@ public abstract class AbstractInternalSqlDatabaseAndConfigMapStrategy extends Ab
     public void undeploy() throws IOException {
         openshift().deleteYaml(projectDefaultsYml);
         cmd.execCommand("oc", "delete", "all", "-l", "app=" + DB_APP_NAME);
+    }
+
+    protected String getImage(String defaultImage, String fromCL) {
+        final String imageFromCL = System.getProperty(fromCL);
+        if (imageFromCL == null || imageFromCL.isEmpty()) {
+            return defaultImage;
+        } else {
+            return imageFromCL;
+        }
     }
 
     protected static Map<String, String> mapOf(String key1, String value1,

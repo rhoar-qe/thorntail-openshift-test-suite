@@ -35,10 +35,10 @@
         <version.io.fabric8.fabric8-maven-plugin>4.3.0</version.io.fabric8.fabric8-maven-plugin>
         <version.io.fabric8.openshift-client>4.6.0</version.io.fabric8.openshift-client>
         <version.io.rest-assured>4.1.2</version.io.rest-assured>
-        <version.io.thorntail>2.5.1.Final-SNAPSHOT</version.io.thorntail>
+        <version.io.thorntail>2.6.1.Final-SNAPSHOT</version.io.thorntail>
         <version.junit.junit>4.12</version.junit.junit>
         <!-- it's also good to manually test version 5.1.48 (or latest in the 5.x stream) from time to time -->
-        <version.mysql.mysql-connector-java>8.0.17</version.mysql.mysql-connector-java>
+        <version.mysql.mysql-connector-java>8.0.20</version.mysql.mysql-connector-java>
         <version.org.apache.httpcomponents.everything>4.5.10</version.org.apache.httpcomponents.everything>
         <version.org.apache.maven.plugins.maven-compiler-plugin>3.8.1</version.org.apache.maven.plugins.maven-compiler-plugin>
         <version.org.apache.maven.plugins.maven-enforcer.plugin>1.4.1</version.org.apache.maven.plugins.maven-enforcer.plugin>
@@ -49,7 +49,7 @@
         <version.org.assertj.assertj-core>3.13.2</version.org.assertj.assertj-core>
         <version.org.awaitility>4.0.1</version.org.awaitility>
         <version.org.codehaus.mojo.keytool-maven-plugin>1.5</version.org.codehaus.mojo.keytool-maven-plugin>
-        <version.org.postgresql>42.2.8</version.org.postgresql>
+        <version.org.postgresql>42.2.12</version.org.postgresql>
         <version.org.jboss.arquillian>1.5.0.Final</version.org.jboss.arquillian>
         <version.org.jboss.resteasy>3.9.0.Final</version.org.jboss.resteasy>
         <version.org.wildfly.core.wildfly-controller-client>7.0.0.Final</version.org.wildfly.core.wildfly-controller-client>
