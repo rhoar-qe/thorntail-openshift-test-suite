@@ -9,7 +9,7 @@ data:
         data-sources:
           MyDS:
             driver-name: mysql
-            connection-url: jdbc:mysql://test-db/testdb?useSSL=false
+            connection-url: jdbc:mysql://test-db/testdb?allowPublicKeyRetrieval=true&useSSL=false
             user-name: testuser
             password: password
             valid-connection-checker-class-name: org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker
