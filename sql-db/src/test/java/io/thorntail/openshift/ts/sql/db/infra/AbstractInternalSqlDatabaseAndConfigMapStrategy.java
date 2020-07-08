@@ -14,16 +14,18 @@ public abstract class AbstractInternalSqlDatabaseAndConfigMapStrategy extends Ab
     private final String image;
     private final File projectDefaultsYml;
     private final Map<String, String> environmentVariables;
+    private final int port;
 
     private final CommandExecutor cmd;
 
     protected AbstractInternalSqlDatabaseAndConfigMapStrategy(String defaultImage, String imageFromCL, File projectDefaultsYml,
-                                                              Map<String, String> environmentVariables) {
+                                                              Map<String, String> environmentVariables, int port) {
 
         this.image = getImage(defaultImage, imageFromCL);
         System.out.println("Image to be used: " + image);
         this.projectDefaultsYml = projectDefaultsYml;
         this.environmentVariables = environmentVariables;
+        this.port = port;
 
         this.cmd = new CommandExecutor();
     }
@@ -32,14 +34,17 @@ public abstract class AbstractInternalSqlDatabaseAndConfigMapStrategy extends Ab
     public void deploy() throws IOException {
         cmd.execCommand("oc", "project", oc().getNamespace());
 
-        List<String> createDbCommand = new ArrayList<>(Arrays.asList("oc", "new-app", image));
-        for (Map.Entry<String, String> environmentVariable : environmentVariables.entrySet()) {
-            createDbCommand.add("-e");
-            createDbCommand.add(environmentVariable.getKey() + "=" + environmentVariable.getValue());
-        }
-        createDbCommand.add("--name=" + DB_APP_NAME);
+        cmd.execCommand("oc", "create", "dc", DB_APP_NAME, "--image=" + image);
 
-        cmd.execCommand(createDbCommand.toArray(new String[0]));
+        cmd.execCommand("oc", "label", "dc", DB_APP_NAME, "app=" + DB_APP_NAME);
+
+        List<String> setEnvCommand = new ArrayList<>(Arrays.asList("oc", "set", "env", "dc", DB_APP_NAME));
+        for (Map.Entry<String, String> environmentVariable : environmentVariables.entrySet()) {
+            setEnvCommand.add(environmentVariable.getKey() + "=" + environmentVariable.getValue());
+        }
+        cmd.execCommand(setEnvCommand.toArray(new String[0]));
+
+        cmd.execCommand("oc", "expose", "dc", DB_APP_NAME, "--port=" + port);
 
         openshift().awaitDeploymentReadiness(DB_APP_NAME, 1);
         openshift().applyYaml(projectDefaultsYml);

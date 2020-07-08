@@ -12,7 +12,8 @@ public class Mysql extends AbstractInternalSqlDatabaseAndConfigMapStrategy {
                         "MYSQL_DATABASE", "testdb",
                         "MYSQL_USER", "testuser",
                         "MYSQL_PASSWORD", "password"
-                )
+                ),
+                3306
         );
     }
 }

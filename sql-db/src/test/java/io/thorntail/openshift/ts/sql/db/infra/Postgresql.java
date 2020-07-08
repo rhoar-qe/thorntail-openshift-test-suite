@@ -12,7 +12,8 @@ public class Postgresql extends AbstractInternalSqlDatabaseAndConfigMapStrategy 
                         "POSTGRESQL_DATABASE", "testdb",
                         "POSTGRESQL_USER", "testuser",
                         "POSTGRESQL_PASSWORD", "password"
-                )
+                ),
+                5432
         );
     }
 }
