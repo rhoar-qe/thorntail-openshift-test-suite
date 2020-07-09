@@ -7,7 +7,7 @@
         <!-- when switching namespace.use.current to false, switch enableImageStreamDetection to true -->
         <property name="enableImageStreamDetection">false</property>
         <property name="env.init.enabled">true</property>
-        <property name="env.setup.script.url">file://${basedir}/target/classes/startup_script.sh</property>
-        <property name="env.teardown.script.url">file://${basedir}/target/classes/cleanup_script.sh</property>
+        <property name="env.setup.script.url">file://${basedir}/target/test-classes/startup_script.sh</property>
+        <property name="env.teardown.script.url">file://${basedir}/target/test-classes/cleanup_script.sh</property>
     </extension>
 </arquillian>
