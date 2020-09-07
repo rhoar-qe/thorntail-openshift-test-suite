@@ -10,20 +10,37 @@
 
     <name>Thorntail OpenShift TS: Parent</name>
 
-    <modules>
-        <module>common</module>
+    <profiles>
+        <profile>
+            <id>all</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>common</module>
 
-        <module>http</module>
-        <module>health-check</module>
-        <module>configmap</module>
+                <module>http</module>
+                <module>health-check</module>
+                <module>configmap</module>
 
-        <module>sql-db</module>
+                <module>sql-db</module>
 
-        <module>topology</module>
-        <module>ssl-passthrough</module>
-        <module>scaling</module>
-        <module>rolling</module>
-    </modules>
+                <module>topology</module>
+                <module>ssl-passthrough</module>
+                <module>scaling</module>
+                <module>rolling</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>interop</id>
+            <modules>
+                <module>common</module>
+
+                <module>http</module>
+            </modules>
+        </profile>
+    </profiles>
+
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
