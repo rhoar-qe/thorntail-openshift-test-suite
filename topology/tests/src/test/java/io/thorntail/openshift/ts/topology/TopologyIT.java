@@ -12,11 +12,11 @@ import static org.hamcrest.Matchers.containsString;
 @RunWith(Arquillian.class)
 public class TopologyIT {
     @RouteURL(value = "topology-1", path = "/api/topology1")
-    @AwaitRoute(path = "/health")
+    @AwaitRoute(path = "/health", repetitions = 10, timeout = 10)
     private String urlTopology1;
 
     @RouteURL(value = "topology-2", path = "/api/topology2")
-    @AwaitRoute(path = "/health")
+    @AwaitRoute(path = "/health", repetitions = 10, timeout = 10)
     private String urlTopology2;
 
     @Test

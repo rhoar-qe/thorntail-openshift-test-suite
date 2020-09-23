@@ -1,7 +1,7 @@
 package io.thorntail.openshift.ts.sql.db.infra;
 
-import io.fabric8.kubernetes.clnt.v4_0.KubernetesClient;
-import io.fabric8.openshift.clnt.v4_0.OpenShiftClient;
+import io.fabric8.kubernetes.clnt.v4_10.KubernetesClient;
+import io.fabric8.openshift.clnt.v4_10.OpenShiftClient;
 import io.thorntail.openshift.ts.common.arquillian.OpenShiftUtil;
 import io.thorntail.openshift.ts.sql.db.arquillian.SqlDatabaseAndConfigMapStrategy;
 import org.jboss.arquillian.core.api.Instance;

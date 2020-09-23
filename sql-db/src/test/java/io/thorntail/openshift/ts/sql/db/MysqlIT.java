@@ -10,6 +10,6 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 @ProjectCleanup
 @SqlDatabaseAndConfigMap(Mysql.class)
-@OpenShiftResource("file:target/classes/META-INF/fabric8/openshift.yml")
+@OpenShiftResource("file:target/classes/META-INF/jkube/openshift.yml")
 public class MysqlIT extends AbstractSqlDatabaseTest {
 }

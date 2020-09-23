@@ -11,5 +11,6 @@
         <property name="env.init.enabled">false</property>
 
         <property name="namespace.cleanup.enabled">false</property>
+        <property name="env.config.url">file://${basedir}/target/classes/META-INF/jkube/openshift.yml</property>
     </extension>
 </arquillian>

@@ -1,10 +1,5 @@
 package io.thorntail.openshift.ts.common.arquillian;
 
-import io.fabric8.kubernetes.api.model.v4_0.Pod;
-import io.fabric8.kubernetes.clnt.v4_0.internal.readiness.Readiness;
-import io.fabric8.openshift.clnt.v4_0.OpenShiftClient;
-import org.arquillian.cube.openshift.impl.client.ResourceUtil;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -12,6 +7,11 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import io.fabric8.kubernetes.api.model.v4_10.Pod;
+import io.fabric8.kubernetes.clnt.v4_10.internal.readiness.Readiness;
+import io.fabric8.openshift.clnt.v4_10.OpenShiftClient;
+import org.arquillian.cube.openshift.impl.client.ResourceUtil;
 
 import static org.awaitility.Awaitility.await;
 
