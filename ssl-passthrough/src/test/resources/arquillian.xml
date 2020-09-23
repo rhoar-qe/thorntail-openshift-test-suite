@@ -9,5 +9,6 @@
         <property name="env.init.enabled">true</property>
         <property name="env.setup.script.url">file://${basedir}/target/test-classes/startup_script.sh</property>
         <property name="env.teardown.script.url">file://${basedir}/target/test-classes/cleanup_script.sh</property>
+        <property name="env.config.url">file://${basedir}/target/classes/META-INF/jkube/openshift.yml</property>
     </extension>
 </arquillian>
