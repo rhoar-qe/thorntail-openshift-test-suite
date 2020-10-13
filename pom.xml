@@ -36,7 +36,7 @@
         <version.io.fabric8.openshift-client>4.10.2</version.io.fabric8.openshift-client>
         <version.io.rest-assured>4.3.1</version.io.rest-assured>
         <version.io.thorntail>2.7.0.Final</version.io.thorntail>
-        <version.junit.junit>4.13</version.junit.junit>
+        <version.junit.junit>4.13.1</version.junit.junit>
         <!-- it's also good to manually test version 5.1.48 (or latest in the 5.x stream) from time to time -->
         <version.mysql.mysql-connector-java>8.0.20</version.mysql.mysql-connector-java>
         <version.org.apache.httpcomponents.everything>4.5.12</version.org.apache.httpcomponents.everything>
