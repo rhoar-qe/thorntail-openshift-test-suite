@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.thorntail.openshift.ts</groupId>
@@ -32,7 +30,6 @@
         <version.java>1.8</version.java>
 
         <version.com.oracle.database.jdbc>12.2.0.1</version.com.oracle.database.jdbc>
-        <version.io.fabric8.fabric8-maven-plugin>4.4.1</version.io.fabric8.fabric8-maven-plugin>
         <version.io.fabric8.openshift-client>4.10.2</version.io.fabric8.openshift-client>
         <version.io.rest-assured>4.3.1</version.io.rest-assured>
         <version.io.thorntail>2.7.0.Final</version.io.thorntail>
@@ -49,6 +46,7 @@
         <version.org.assertj.assertj-core>3.16.1</version.org.assertj.assertj-core>
         <version.org.awaitility>4.0.3</version.org.awaitility>
         <version.org.codehaus.mojo.keytool-maven-plugin>1.5</version.org.codehaus.mojo.keytool-maven-plugin>
+        <version.org.eclipse.jkube>1.1.0</version.org.eclipse.jkube>
         <version.org.postgresql>42.2.18</version.org.postgresql>
         <version.org.jboss.arquillian>1.6.0.Final</version.org.jboss.arquillian>
         <version.org.jboss.resteasy>3.11.2.Final</version.org.jboss.resteasy>
@@ -60,7 +58,7 @@
           -   version.org.wildfly.core.wildfly-controller-client
           -->
 
-        <fabric8.generator.from>registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift</fabric8.generator.from>
+        <jkube.generator.from>registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift</jkube.generator.from>
     </properties>
 
     <dependencyManagement>
@@ -199,9 +197,9 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>io.fabric8</groupId>
-                    <artifactId>fabric8-maven-plugin</artifactId>
-                    <version>${version.io.fabric8.fabric8-maven-plugin}</version>
+                    <groupId>org.eclipse.jkube</groupId>
+                    <artifactId>openshift-maven-plugin</artifactId>
+                    <version>${version.org.eclipse.jkube}</version>
                     <executions>
                         <execution>
                             <id>default</id>
