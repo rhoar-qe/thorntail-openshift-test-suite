@@ -29,23 +29,8 @@
         </dependency>
 
         <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.arquillian.cube</groupId>
-            <artifactId>arquillian-cube-openshift</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.arquillian.junit</groupId>
-            <artifactId>arquillian-junit-standalone</artifactId>
+            <groupId>io.thorntail.openshift-test</groupId>
+            <artifactId>thorntail-openshift-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -79,6 +64,23 @@
                         <goals>
                             <goal>generateKeyPair</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>bash</executable>
+                            <commandlineArgs>${project.basedir}/update-secret.sh</commandlineArgs>
+                            <workingDirectory>${project.basedir}</workingDirectory>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

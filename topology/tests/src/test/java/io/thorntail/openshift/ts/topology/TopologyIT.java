@@ -1,30 +1,31 @@
 package io.thorntail.openshift.ts.topology;
 
-import org.arquillian.cube.openshift.impl.enricher.AwaitRoute;
-import org.arquillian.cube.openshift.impl.enricher.RouteURL;
-import org.jboss.arquillian.junit.Arquillian;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import io.thorntail.openshift.test.OpenShiftTest;
+import io.thorntail.openshift.test.injection.TestResource;
+import io.thorntail.openshift.test.injection.WithName;
+import org.junit.jupiter.api.Test;
+
+import java.net.URL;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
 
-@RunWith(Arquillian.class)
+@OpenShiftTest
 public class TopologyIT {
-    @RouteURL(value = "topology-1", path = "/api/topology1")
-    @AwaitRoute(path = "/health")
-    private String urlTopology1;
+    @TestResource
+    @WithName("topology-1")
+    private URL urlTopology1;
 
-    @RouteURL(value = "topology-2", path = "/api/topology2")
-    @AwaitRoute(path = "/health")
-    private String urlTopology2;
+    @TestResource
+    @WithName("topology-2")
+    private URL urlTopology2;
 
     @Test
     public void topology1() {
         given()
-                .baseUri(urlTopology1)
+                .baseUri(urlTopology1.toString())
         .when()
-                .get()
+                .get("/api/topology1")
         .then()
                 .statusCode(200)
                 .body(containsString("topology-1"))
@@ -34,9 +35,9 @@ public class TopologyIT {
     @Test
     public void topology2() {
         given()
-                .baseUri(urlTopology2)
+                .baseUri(urlTopology2.toString())
         .when()
-                .get()
+                .get("/api/topology2")
         .then()
                 .statusCode(200)
                 .body(containsString("topology-1"))

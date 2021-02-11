@@ -1,7 +1,5 @@
 metadata:
   name: app-config
-  # workaround for https://github.com/fabric8io/fabric8-maven-plugin/pull/1805
-  annotations: {}
 data:
   project-defaults.yml: |
     greeting:

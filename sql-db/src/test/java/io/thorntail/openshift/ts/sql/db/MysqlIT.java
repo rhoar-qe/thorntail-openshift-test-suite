@@ -1,15 +1,25 @@
 package io.thorntail.openshift.ts.sql.db;
 
-import io.thorntail.openshift.ts.common.arquillian.ProjectCleanup;
-import io.thorntail.openshift.ts.sql.db.arquillian.SqlDatabaseAndConfigMap;
-import io.thorntail.openshift.ts.sql.db.infra.Mysql;
-import org.arquillian.cube.openshift.api.OpenShiftResource;
-import org.jboss.arquillian.junit.Arquillian;
-import org.junit.runner.RunWith;
 
-@RunWith(Arquillian.class)
-@ProjectCleanup
-@SqlDatabaseAndConfigMap(Mysql.class)
-@OpenShiftResource("file:target/classes/META-INF/fabric8/openshift.yml")
+import io.thorntail.openshift.test.CustomizeApplicationDeployment;
+import io.thorntail.openshift.test.CustomizeApplicationUndeployment;
+import io.thorntail.openshift.test.OpenShiftTest;
+import io.thorntail.openshift.test.util.OpenShiftUtil;
+import io.thorntail.openshift.ts.sql.db.infra.Mysql;
+import io.thorntail.openshift.ts.sql.db.infra.ProjectCleanup;
+
+import java.io.IOException;
+
+@OpenShiftTest
 public class MysqlIT extends AbstractSqlDatabaseTest {
+    @CustomizeApplicationDeployment
+    public static void deploy(OpenShiftUtil openshift) throws IOException, InterruptedException {
+        new ProjectCleanup().run();
+        new Mysql(openshift).deploy();
+    }
+
+    @CustomizeApplicationUndeployment
+    public static void undeploy(OpenShiftUtil openshift) throws IOException, InterruptedException {
+        new Mysql(openshift).undeploy();
+    }
 }

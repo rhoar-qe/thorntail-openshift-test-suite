@@ -1,49 +1,46 @@
 package io.thorntail.openshift.ts.scaling;
 
-import io.thorntail.openshift.ts.common.arquillian.OpenShiftUtil;
-import org.arquillian.cube.openshift.impl.enricher.AwaitRoute;
-import org.arquillian.cube.openshift.impl.enricher.RouteURL;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import io.thorntail.openshift.test.AppMetadata;
+import io.thorntail.openshift.test.OpenShiftTest;
+import io.thorntail.openshift.test.injection.TestResource;
+import io.thorntail.openshift.test.util.OpenShiftUtil;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
+import java.net.URL;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-@RunWith(Arquillian.class)
+@OpenShiftTest
 public class ScalingIT {
-    private static final String APP_NAME = System.getProperty("app.name");
-
-    @RouteURL(value = "${app.name}")
-    @AwaitRoute
-    private String url;
-
-    @ArquillianResource
+    @TestResource
     private OpenShiftUtil openshift;
 
-    @After
+    @TestResource
+    private AppMetadata app;
+
+    @TestResource
+    private URL url;
+
+    @AfterEach
     public void scaleBackToOne() {
-        openshift.scale(APP_NAME, 1);
+        openshift.scale(app.name, 1);
     }
 
     @Test
     public void scaleUp() {
-        openshift.scale(APP_NAME, 2);
+        openshift.scale(app.name, 2);
 
         Set<String> uniqueIds = Collections.newSetFromMap(new ConcurrentHashMap<>());
-        await().atMost(1, TimeUnit.MINUTES).untilAsserted(() -> {
+        await().atMost(5, TimeUnit.MINUTES).untilAsserted(() -> {
             String uniqueId =
-                    given()
-                            .baseUri(url)
-                    .when()
+                    when()
                             .get()
                     .then()
                             .statusCode(200)
@@ -53,14 +50,14 @@ public class ScalingIT {
             assertThat(uniqueIds).hasSize(2);
         });
 
-        assertThat(openshift.countReadyReplicas(APP_NAME)).isEqualTo(2);
+        assertThat(openshift.countReadyReplicas(app.name)).isEqualTo(2);
     }
 
     @Test
     public void scaleDown() {
         scaleUp();
 
-        openshift.scale(APP_NAME, 1);
+        openshift.scale(app.name, 1);
 
         assertSingleReplica();
     }
@@ -69,12 +66,10 @@ public class ScalingIT {
     public void scaleDownToZero() {
         assertSingleReplica();
 
-        openshift.scale(APP_NAME, 0);
+        openshift.scale(app.name, 0);
 
         for (int i = 0; i < 100; i++) {
-            given()
-                    .baseUri(url)
-            .when()
+            when()
                     .get()
             .then()
                     .statusCode(503);
@@ -85,9 +80,7 @@ public class ScalingIT {
         Set<String> uniqueIds = Collections.newSetFromMap(new ConcurrentHashMap<>());
         for (int i = 0; i < 100; i++) {
             String uniqueId =
-                    given()
-                            .baseUri(url)
-                    .when()
+                    when()
                             .get()
                     .then()
                             .statusCode(200)
@@ -97,6 +90,6 @@ public class ScalingIT {
 
         assertThat(uniqueIds).hasSize(1);
 
-        assertThat(openshift.countReadyReplicas(APP_NAME)).isEqualTo(1);
+        assertThat(openshift.countReadyReplicas(app.name)).isEqualTo(1);
     }
 }

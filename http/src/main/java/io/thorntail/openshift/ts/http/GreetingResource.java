@@ -1,5 +1,6 @@
 package io.thorntail.openshift.ts.http;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -7,6 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 @Path("/greeting")
+@ApplicationScoped
 public class GreetingResource {
     private static final String TEMPLATE = "Hello, %s!";
 
