@@ -1,43 +1,43 @@
 package io.thorntail.openshift.ts.configmap;
 
-import io.thorntail.openshift.ts.common.arquillian.OpenShiftUtil;
-import org.arquillian.cube.openshift.impl.enricher.AwaitRoute;
-import org.arquillian.cube.openshift.impl.enricher.RouteURL;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import io.restassured.RestAssured;
+import io.thorntail.openshift.test.AppMetadata;
+import io.thorntail.openshift.test.OpenShiftTest;
+import io.thorntail.openshift.test.injection.TestResource;
+import io.thorntail.openshift.test.util.OpenShiftUtil;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.File;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.containsString;
 
-@RunWith(Arquillian.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@OpenShiftTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ConfigMapIT {
-    private static final String APP_NAME = System.getProperty("app.name");
-
-    @ArquillianResource
+    @TestResource
     private OpenShiftUtil openshift;
 
-    @RouteURL(value = "${app.name}", path = "/api/greeting")
-    @AwaitRoute
-    private URL greetingUrl;
+    @TestResource
+    private AppMetadata app;
 
-    @RouteURL(value = "${app.name}", path = "/health")
-    private URL healthUrl;
+    @BeforeEach
+    public void setUp() {
+        RestAssured.basePath = "/api/greeting";
+    }
 
     @Test
-    public void _1_simpleInvocation() {
-        given()
-                .baseUri(greetingUrl.toString())
-        .when()
+    @Order(1)
+    public void simpleInvocation() {
+        when()
                 .get()
         .then()
                 .statusCode(200)
@@ -45,9 +45,9 @@ public class ConfigMapIT {
     }
 
     @Test
-    public void _2_invocationWithParam() {
+    @Order(2)
+    public void invocationWithParam() {
         given()
-                .baseUri(greetingUrl.toString())
                 .queryParam("name", "Steve")
         .when()
                 .get()
@@ -57,13 +57,12 @@ public class ConfigMapIT {
     }
 
     @Test
-    public void _3_updateConfigMap() throws Exception {
+    @Order(3)
+    public void updateConfigMap() throws Exception {
         openshift.applyYaml(new File("target/test-classes/test-config-update.yml"));
-        openshift.rolloutChanges(APP_NAME, greetingUrl);
+        openshift.rolloutChanges(app.name);
 
-        given()
-                .baseUri(greetingUrl.toString())
-        .when()
+        when()
                 .get()
         .then()
                 .statusCode(200)
@@ -71,18 +70,16 @@ public class ConfigMapIT {
     }
 
     @Test
-    public void _4_wrongConfiguration() throws Exception {
+    @Order(4)
+    public void wrongConfiguration() throws Exception {
         openshift.applyYaml(new File("target/test-classes/test-config-broken.yml"));
-        openshift.rolloutChanges(APP_NAME, healthUrl);
+        openshift.rolloutChanges(app.name, false);
 
         await().atMost(5, TimeUnit.MINUTES).untilAsserted(() -> {
-            given()
-                    .baseUri(greetingUrl.toString())
-            .when()
+            when()
                     .get()
             .then()
                     .statusCode(500);
         });
     }
-
 }

@@ -1,7 +1,13 @@
 package io.thorntail.openshift.ts.sql.db.infra;
 
-public class ExternalOracle extends AbstractExternalSqlDatabaseAndConfigMapStrategy {
-    public ExternalOracle() {
-        super("oracle12c", "target/test-classes/project-defaults-external-oracle.yml");
+import io.thorntail.openshift.test.util.OpenShiftUtil;
+
+public class ExternalOracle extends AbstractExternalSqlDatabaseAndConfigMap {
+    public ExternalOracle(OpenShiftUtil openshift) {
+        super(
+                openshift,
+                "oracle12c",
+                "target/test-classes/project-defaults-external-oracle.yml"
+        );
     }
 }

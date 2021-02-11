@@ -1,38 +1,26 @@
 package io.thorntail.openshift.ts.healthcheck;
 
-import org.arquillian.cube.openshift.impl.client.OpenShiftAssistant;
-import org.arquillian.cube.openshift.impl.enricher.AwaitRoute;
-import org.arquillian.cube.openshift.impl.enricher.RouteURL;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import io.thorntail.openshift.test.OpenShiftTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
-import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.containsString;
 
-@RunWith(Arquillian.class)
+@OpenShiftTest
 public class HealthCheckIT {
-    @RouteURL(value = "${app.name}", path = "/api/greeting")
-    @AwaitRoute
-    private URL greetingUrl;
-
-    @RouteURL(value = "${app.name}", path = "/api/stop")
-    private String stopUrl;
-
-    @ArquillianResource
-    private OpenShiftAssistant openShiftAssistant;
+    @BeforeEach
+    public void setUp() {
+        await().atMost(5, TimeUnit.MINUTES).untilAsserted(this::simpleInvocation);
+    }
 
     @Test
     public void simpleInvocation() {
-        given()
-                .baseUri(greetingUrl.toString())
-        .when()
-                .get()
+        when()
+                .get("/api/greeting")
         .then()
                 .statusCode(200)
                 .body(containsString("Hello, World!"));
@@ -42,18 +30,14 @@ public class HealthCheckIT {
     public void stopServiceAndWaitForRestart() {
         simpleInvocation();
 
-        given()
-                .baseUri(stopUrl)
-        .when()
-                .post()
+        when()
+                .post("/api/stop")
         .then()
                 .statusCode(200);
 
         await().atMost(5, TimeUnit.MINUTES).untilAsserted(() -> {
-            given()
-                    .baseUri(greetingUrl.toString())
-            .when()
-                    .get()
+            when()
+                    .get("/api/greeting")
             .then()
                     .statusCode(503);
         });

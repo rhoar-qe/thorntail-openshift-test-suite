@@ -1,22 +1,31 @@
 package io.thorntail.openshift.ts.sql.db;
 
-import org.arquillian.cube.openshift.impl.enricher.AwaitRoute;
-import org.arquillian.cube.openshift.impl.enricher.RouteURL;
-import org.junit.Test;
+import io.restassured.RestAssured;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static io.restassured.RestAssured.given;
+import java.util.concurrent.TimeUnit;
+
+import static io.restassured.RestAssured.when;
+import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.containsString;
 
 public abstract class AbstractSqlDatabaseTest {
-    @RouteURL(value = "${app.name}", path = "/api/sqldb")
-    @AwaitRoute
-    private String url;
+    @BeforeEach
+    public void setUp() {
+        RestAssured.basePath = "/api/sqldb";
+
+        await().atMost(5, TimeUnit.MINUTES).untilAsserted(() -> {
+            when()
+                    .get()
+            .then()
+                    .statusCode(200);
+        });
+    }
 
     @Test
     public void selectOne() {
-        given()
-                .baseUri(url)
-        .when()
+        when()
                 .get("/select-one")
         .then()
                 .statusCode(200)
@@ -26,9 +35,7 @@ public abstract class AbstractSqlDatabaseTest {
 
     @Test
     public void selectMany() {
-        given()
-                .baseUri(url)
-        .when()
+        when()
                 .get("/select-many")
         .then()
                 .statusCode(200)
@@ -37,9 +44,7 @@ public abstract class AbstractSqlDatabaseTest {
 
     @Test
     public void update() {
-        given()
-                .baseUri(url)
-        .when()
+        when()
                 .get("/update")
         .then()
                 .statusCode(200)
@@ -48,9 +53,7 @@ public abstract class AbstractSqlDatabaseTest {
 
     @Test
     public void delete() {
-        given()
-                .baseUri(url)
-        .when()
+        when()
                 .get("/delete")
         .then()
                 .statusCode(200)

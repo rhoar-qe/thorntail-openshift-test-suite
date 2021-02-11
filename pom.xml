@@ -9,8 +9,6 @@
     <name>Thorntail OpenShift TS: Parent</name>
 
     <modules>
-        <module>common</module>
-
         <module>http</module>
         <module>health-check</module>
         <module>configmap</module>
@@ -30,10 +28,8 @@
         <version.java>1.8</version.java>
 
         <version.com.oracle.database.jdbc>12.2.0.1</version.com.oracle.database.jdbc>
-        <version.io.fabric8.openshift-client>4.10.2</version.io.fabric8.openshift-client>
-        <version.io.rest-assured>4.3.1</version.io.rest-assured>
         <version.io.thorntail>2.7.0.Final</version.io.thorntail>
-        <version.junit.junit>4.13.1</version.junit.junit>
+        <version.io.thorntail.openshift-test>1.3.0</version.io.thorntail.openshift-test>
         <!-- it's also good to manually test version 5.1.48 (or latest in the 5.x stream) from time to time -->
         <version.mysql.mysql-connector-java>8.0.20</version.mysql.mysql-connector-java>
         <version.org.apache.httpcomponents.everything>4.5.12</version.org.apache.httpcomponents.everything>
@@ -42,13 +38,10 @@
         <version.org.apache.maven.plugins.maven-resources-plugin>3.1.0</version.org.apache.maven.plugins.maven-resources-plugin>
         <version.org.apache.maven.plugins.maven-surefire-plugin>2.22.2</version.org.apache.maven.plugins.maven-surefire-plugin>
         <version.org.apache.maven.plugins.maven-war-plugin>3.3.0</version.org.apache.maven.plugins.maven-war-plugin>
-        <version.org.arquillian.cube>1.18.2</version.org.arquillian.cube>
-        <version.org.assertj.assertj-core>3.16.1</version.org.assertj.assertj-core>
-        <version.org.awaitility>4.0.3</version.org.awaitility>
+        <version.org.codehaus.mojo.exec-maven-plugin>3.0.0</version.org.codehaus.mojo.exec-maven-plugin>
         <version.org.codehaus.mojo.keytool-maven-plugin>1.5</version.org.codehaus.mojo.keytool-maven-plugin>
         <version.org.eclipse.jkube>1.1.0</version.org.eclipse.jkube>
         <version.org.postgresql>42.2.18</version.org.postgresql>
-        <version.org.jboss.arquillian>1.6.0.Final</version.org.jboss.arquillian>
         <version.org.jboss.resteasy>3.11.2.Final</version.org.jboss.resteasy>
         <version.org.wildfly.core.wildfly-controller-client>10.0.3.Final</version.org.wildfly.core.wildfly-controller-client>
 
@@ -63,13 +56,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- modules -->
-            <dependency>
-                <groupId>io.thorntail.openshift.ts</groupId>
-                <artifactId>ts-common</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
             <!-- BOMs -->
             <dependency>
                 <groupId>io.thorntail</groupId>
@@ -77,20 +63,6 @@
                 <version>${version.io.thorntail}</version>
                 <scope>import</scope>
                 <type>pom</type>
-            </dependency>
-            <dependency>
-                <groupId>org.arquillian.cube</groupId>
-                <artifactId>arquillian-cube-bom</artifactId>
-                <version>${version.org.arquillian.cube}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.arquillian</groupId>
-                <artifactId>arquillian-bom</artifactId>
-                <version>${version.org.jboss.arquillian}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
 
             <dependency>
@@ -117,61 +89,9 @@
 
             <!-- test dependencies -->
             <dependency>
-                <groupId>io.fabric8</groupId>
-                <artifactId>openshift-client</artifactId>
-                <version>${version.io.fabric8.openshift-client}</version>
-                <!-- workaround for https://github.com/fabric8io/kubernetes-client/issues/2195 -->
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.jsonschema2pojo</groupId>
-                        <artifactId>jsonschema2pojo-core</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>io.sundr</groupId>
-                        <artifactId>builder-annotations</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>io.sundr</groupId>
-                        <artifactId>transform-annotations</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>io.rest-assured</groupId>
-                <artifactId>rest-assured</artifactId>
-                <version>${version.io.rest-assured}</version>
-            </dependency>
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${version.junit.junit}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.arquillian.cube</groupId>
-                <artifactId>arquillian-cube-openshift</artifactId>
-                <version>${version.org.arquillian.cube}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>io.undertow</groupId>
-                        <artifactId>undertow-core</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.assertj</groupId>
-                <artifactId>assertj-core</artifactId>
-                <version>${version.org.assertj.assertj-core}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.awaitility</groupId>
-                <artifactId>awaitility</artifactId>
-                <version>${version.org.awaitility}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>junit</groupId>
-                        <artifactId>junit</artifactId>
-                    </exclusion>
-                </exclusions>
+                <groupId>io.thorntail.openshift-test</groupId>
+                <artifactId>thorntail-openshift-test</artifactId>
+                <version>${version.io.thorntail.openshift-test}</version>
             </dependency>
 
             <!-- JDBC drivers -->
@@ -257,9 +177,6 @@
                     <configuration>
                         <!-- the default value of "true" is a real pain in multi-module projects -->
                         <failIfNoSpecifiedTests>false</failIfNoSpecifiedTests>
-                        <systemPropertyVariables>
-                            <app.name>${project.artifactId}</app.name>
-                        </systemPropertyVariables>
                     </configuration>
                     <executions>
                         <execution>
@@ -291,6 +208,11 @@
                     <configuration>
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>${version.org.codehaus.mojo.exec-maven-plugin}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>

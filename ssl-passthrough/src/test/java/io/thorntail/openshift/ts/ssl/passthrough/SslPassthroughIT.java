@@ -1,27 +1,31 @@
 package io.thorntail.openshift.ts.ssl.passthrough;
 
-import org.arquillian.cube.openshift.impl.enricher.AwaitRoute;
-import org.arquillian.cube.openshift.impl.enricher.RouteURL;
-import org.jboss.arquillian.junit.Arquillian;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import io.thorntail.openshift.test.AdditionalResources;
+import io.thorntail.openshift.test.OpenShiftTest;
+import io.thorntail.openshift.test.injection.TestResource;
+import io.thorntail.openshift.test.injection.WithName;
+import org.junit.jupiter.api.Test;
+
+import java.net.URL;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
 
-@RunWith(Arquillian.class)
+@OpenShiftTest
+@AdditionalResources("classpath:secret.yml")
 public class SslPassthroughIT {
-    @RouteURL(value = "${app.name}")
-    @AwaitRoute(path = "/health")
-    private String url;
+    @TestResource
+    @WithName("ssl-passthrough")
+    private URL url;
 
-    @RouteURL(value = "secured-${app.name}")
-    private String securedUrl;
+    @TestResource
+    @WithName("secured-ssl-passthrough")
+    private URL securedUrl;
 
     @Test
     public void unsecuredRoute() {
         given()
-                .baseUri(url)
+                .baseUri(url.toString())
         .when()
                 .get()
         .then()
@@ -32,7 +36,7 @@ public class SslPassthroughIT {
     @Test
     public void sslPassThrough() {
         given()
-                .baseUri(securedUrl)
+                .baseUri(securedUrl.toString())
                 .relaxedHTTPSValidation()
         .when()
                 .get()

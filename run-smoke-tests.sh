@@ -4,11 +4,10 @@
 THORNTAIL_VERSION=2.7.0.Final
 OUTPUT_DIRECTORY=./failsafe-reports
 POSITIONAL=()
-while [[ $# -gt 0 ]]
-do
-key="$1"
+while [[ $# -gt 0 ]] ; do
+  key="$1"
 
-case $key in
+  case $key in
     -v|--version.io.thorntail)
     THORNTAIL_VERSION="$2"
     shift
@@ -31,26 +30,22 @@ case $key in
     POSITIONAL+=("$1") # save it in an array for later
     shift
     ;;
-esac
+  esac
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
 echo "Running smoke test for Thorntail ${THORNTAIL_VERSION}."
 
-PROJECTS=common,http,topology/tests
+PROJECTS=http,topology/tests
 
 mvn clean verify -Dversion.io.thorntail=$THORNTAIL_VERSION -pl $PROJECTS -am
 
 mkdir -p $OUTPUT_DIRECTORY
 
-for PROJECT in ${PROJECTS//","/" "}; do
-  if [ $PROJECT = "common" ]; then
-    continue
-  fi
-  for FILE in ./$PROJECT/target/failsafe-reports/*.xml; do
+for PROJECT in ${PROJECTS//","/" "} ; do
+  for FILE in ./$PROJECT/target/failsafe-reports/*.xml ; do
     FILENAME=$(basename $FILE)
     echo $FILENAME
     cp $FILE ./$OUTPUT_DIRECTORY/$FILENAME
   done
 done
-
