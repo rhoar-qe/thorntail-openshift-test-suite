@@ -32,7 +32,7 @@
         <version.io.thorntail.openshift-test>1.3.0</version.io.thorntail.openshift-test>
         <!-- it's also good to manually test version 5.1.48 (or latest in the 5.x stream) from time to time -->
         <version.mysql.mysql-connector-java>8.0.20</version.mysql.mysql-connector-java>
-        <version.org.apache.httpcomponents.everything>4.5.12</version.org.apache.httpcomponents.everything>
+        <version.org.apache.httpcomponents.everything>4.5.13</version.org.apache.httpcomponents.everything>
         <version.org.apache.maven.plugins.maven-compiler-plugin>3.8.1</version.org.apache.maven.plugins.maven-compiler-plugin>
         <version.org.apache.maven.plugins.maven-enforcer.plugin>1.4.1</version.org.apache.maven.plugins.maven-enforcer.plugin>
         <version.org.apache.maven.plugins.maven-resources-plugin>3.1.0</version.org.apache.maven.plugins.maven-resources-plugin>
