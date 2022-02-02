@@ -41,7 +41,7 @@
         <version.org.codehaus.mojo.exec-maven-plugin>3.0.0</version.org.codehaus.mojo.exec-maven-plugin>
         <version.org.codehaus.mojo.keytool-maven-plugin>1.5</version.org.codehaus.mojo.keytool-maven-plugin>
         <version.org.eclipse.jkube>1.1.0</version.org.eclipse.jkube>
-        <version.org.postgresql>42.2.18</version.org.postgresql>
+        <version.org.postgresql>42.2.25</version.org.postgresql>
         <version.org.jboss.resteasy>3.11.2.Final</version.org.jboss.resteasy>
         <version.org.wildfly.core.wildfly-controller-client>10.0.3.Final</version.org.wildfly.core.wildfly-controller-client>
 
